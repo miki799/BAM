@@ -9,9 +9,6 @@ interface DataDao {
     @Query("SELECT * FROM data")
     suspend fun getAll(): List<DataEntity>
 
-    @Query("DELETE FROM data")
-    suspend fun deleteAll()
-
     @Insert
     suspend fun insert(data: DataEntity)
 }

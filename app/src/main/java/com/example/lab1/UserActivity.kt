@@ -2,7 +2,6 @@ package com.example.lab1
 
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -18,10 +17,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -72,9 +67,6 @@ fun UserActivityLayout(name: String, modifier: Modifier = Modifier) {
     val intent = Intent(ctx, CounterService::class.java)
     intent.putExtra("name", name)
 
-    var dbNotEmpty by remember {
-        mutableStateOf(false)
-    }
     Column(
         modifier = modifier
             .padding(40.dp),
@@ -88,12 +80,6 @@ fun UserActivityLayout(name: String, modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
-                if (dbNotEmpty) {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        DatabaseSingleton.getDatabase(ctx).dataDao().deleteAll()
-                    }
-                    dbNotEmpty = false
-                }
                 ctx.startService(intent)
             }
         ) {
@@ -102,7 +88,6 @@ fun UserActivityLayout(name: String, modifier: Modifier = Modifier) {
         Button(
             onClick = {
                 ctx.stopService(intent)
-                dbNotEmpty = true
             }
         ) {
             Text(stringResource(R.string.stop_activities))
@@ -111,7 +96,7 @@ fun UserActivityLayout(name: String, modifier: Modifier = Modifier) {
             onClick = {
                 CoroutineScope(Dispatchers.IO).launch {
                     val size = DatabaseSingleton.getDatabase(ctx).dataDao().getAll().size
-                    Log.d("UserActivity", "table size $size")
+                    Log.d("UserActivity", "Database table size $size")
                 }
             }
         ) {
