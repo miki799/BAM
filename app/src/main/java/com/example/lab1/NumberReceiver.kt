@@ -10,15 +10,19 @@ import kotlinx.coroutines.launch
 
 class NumberReceiver : BroadcastReceiver() {
 
+    object NumberReceiverConstants {
+        const val TAG = "number_receiver"
+    }
+
     override fun onReceive(context: Context, intent: Intent) {
-        val id = intent.getIntExtra("id", 0)
+        val id = intent.getIntExtra("service_id", 0)
         val name = intent.getStringExtra("name")
         val number = intent.getIntExtra("number", 0)
-        Log.d("NumberReceiver", "Service instance Id: $id, Name: $name, Number: $number")
+        Log.d(NumberReceiverConstants.TAG, "Service instance Id: $id, Name: $name, Number: $number")
 
         CoroutineScope(Dispatchers.IO).launch {
             val data = DataEntity(name = name, number = number)
-            DatabaseSingleton.getDatabase(context.applicationContext).dataDao().insert(data)
+            AppDatabase.getDatabase(context.applicationContext).dataDao().insert(data)
         }
 
     }

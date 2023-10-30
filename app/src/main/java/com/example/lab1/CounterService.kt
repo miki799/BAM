@@ -11,8 +11,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class CounterService : Service() {
-    object ServiceConstants {
-        const val TAG = "CounterService"
+    object CounterServiceConstants {
+        const val TAG = "counter_service"
     }
 
     private val serviceInstancesMap = mutableMapOf<Int, ServiceInstance>()
@@ -31,13 +31,13 @@ class CounterService : Service() {
         serviceInstancesMap.forEach {
             val serviceInstance = it.value
             val intent = Intent("number_receiver")
-            intent.putExtra("id", serviceInstance.getId())
+            intent.putExtra("service_id", serviceInstance.getId())
             intent.putExtra("name", serviceInstance.getName())
             intent.putExtra("number", serviceInstance.getCounterValue())
             sendBroadcast(intent)
             serviceInstance.cancelJob()
         } // cancel jobs in coroutines
-        Log.d(ServiceConstants.TAG, "$amount CounterService instances stopped")
+        Log.d(CounterServiceConstants.TAG, "$amount CounterService instances stopped")
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -50,10 +50,10 @@ class CounterService : Service() {
         private var job: Job? = null
 
         init {
-            Log.d(ServiceConstants.TAG, "CounterService instance $startId created")
+            Log.d(CounterServiceConstants.TAG, "CounterService instance $startId created")
             job = CoroutineScope(Dispatchers.IO).launch {
                 while (true) {
-                    Log.d(ServiceConstants.TAG, "CounterService instance $startId, Counter: $counter")
+                    Log.d(CounterServiceConstants.TAG, "CounterService instance $startId, Counter: $counter")
                     counter++
                     delay(1000) // wait 1s
                 }

@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // init database
-        DatabaseSingleton.getDatabase(applicationContext)
+        AppDatabase.getDatabase(applicationContext)
 
         setContent {
             LAB1Theme {

@@ -6,9 +6,12 @@ import androidx.room.Query
 
 @Dao
 interface DataDao {
-    @Query("SELECT * FROM data")
-    suspend fun getAll(): List<DataEntity>
+    @Query("SELECT * FROM data_table")
+    fun getAll(): List<DataEntity>
 
     @Insert
     suspend fun insert(data: DataEntity)
+
+    @Query("DELETE FROM data_table")
+    suspend fun deleteAll()
 }

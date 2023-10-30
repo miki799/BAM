@@ -31,6 +31,10 @@ import kotlinx.coroutines.launch
 
 class UserActivity : ComponentActivity() {
 
+    object UserActivityConstants {
+        const val TAG = "user_activity"
+    }
+
     private val numberReceiver = NumberReceiver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +43,7 @@ class UserActivity : ComponentActivity() {
         val name = intent.getStringExtra("name").orEmpty()
 
         // register broadcast receiver
-        val intentFilter = IntentFilter("number_receiver")
+        val intentFilter = IntentFilter(NumberReceiver.NumberReceiverConstants.TAG)
         registerReceiver(numberReceiver, intentFilter)
 
         setContent {
@@ -95,8 +99,8 @@ fun UserActivityLayout(name: String, modifier: Modifier = Modifier) {
         Button(
             onClick = {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val size = DatabaseSingleton.getDatabase(ctx).dataDao().getAll().size
-                    Log.d("UserActivity", "Database table size $size")
+                    val size = AppDatabase.getDatabase(ctx).dataDao().getAll().size
+                    Log.d(UserActivity.UserActivityConstants.TAG, "Database table size $size")
                 }
             }
         ) {

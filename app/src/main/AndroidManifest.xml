@@ -12,10 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LAB1"
         tools:targetApi="31">
+        <provider
+            android:name=".ContentProvider"
+            android:authorities="com.example.lab1.provider"
+            android:enabled="true"
+            android:exported="true">
+        </provider>
+
+
         <receiver
             android:name=".NumberReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
 
         <service
             android:name=".CounterService"
