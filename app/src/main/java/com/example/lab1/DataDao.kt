@@ -12,6 +12,4 @@ interface DataDao {
     @Insert
     suspend fun insert(data: DataEntity)
 
-    @Query("DELETE FROM data_table")
-    suspend fun deleteAll()
 }
